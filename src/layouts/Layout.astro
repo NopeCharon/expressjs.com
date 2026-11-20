@@ -167,7 +167,7 @@ const lang = getLangFromUrl(Astro.url);
   <body>
     <Header />
     <Flex class="layout-wrapper">
-      <Sidebar />
+      <Sidebar currentPath={canonicalPathname} />
       <FlexItem grow class="layout-content">
         <Flex direction="column" class="h-full">
           <main id="main-content" tabindex="-1">

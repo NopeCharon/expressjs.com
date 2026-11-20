@@ -19,18 +19,24 @@ type Props = HTMLAttributes<'div'> & {
   menu?: Menu;
   versions?: VersionConfig[];
   defaultVersion?: string;
+  /**
+   * Path of the current page, used to find the active menu entry and its version.
+   * Defaults to the requested URL; pages served as a copy of another URL (e.g.
+   * `/en/guide/routing/` for `/en/5x/guide/routing/`) pass the original instead.
+   */
+  currentPath?: string;
 };
 
 const {
   menu = mainMenu,
   versions = VERSIONS,
   defaultVersion = DEFAULT_VERSION,
+  currentPath = Astro.url.pathname,
   ...rest
 } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const currentPath = Astro.url.pathname;
 const currentVersion = detectVersionFromUrl(currentPath, versions, defaultVersion);
 
 const submenus: SubmenuData[] = [];
@@ -48,6 +54,7 @@ const initialActiveLevel = calculateInitialActiveLevel(submenus, currentPath, la
   aria-labelledby="sidebar-title"
   aria-hidden="true"
   data-sidebar
+  data-testid="sidebar"
   data-current-path={currentPath}
   data-current-version={currentVersion}
   {...rest}
